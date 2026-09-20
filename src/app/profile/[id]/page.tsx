@@ -1,12 +1,22 @@
-export default async function UserProfile({params}: any) {
+import Link from "next/link";
+
+export default async function UserProfile({ params }: any) {
   const { id } = await params;
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2">
-      <h1>Profile</h1>
-      <hr />
-      <p className="text-4xl ">
-        Profile Page <span className="p-2 ml-2 rounded bg-orange-500 text-black ">{id}</span>
-      </p>
-    </div>
+    <main className="min-h-screen px-6 py-16 sm:px-16">
+      <div className="max-w-xl">
+        <h1 className="font-display text-4xl tracking-tight">User profile</h1>
+        <p className="mt-2 text-muted">Details for this account.</p>
+
+        <div className="mt-10 border-t border-line pt-6">
+          <p className="text-sm text-muted">User ID</p>
+          <p className="mt-1 break-all">{id}</p>
+        </div>
+
+        <Link href="/profile" className="btn btn-quiet mt-10">
+          Back to profile
+        </Link>
+      </div>
+    </main>
   );
 }

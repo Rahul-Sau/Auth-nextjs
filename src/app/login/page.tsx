@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
+import AuthShell from "@/components/AuthShell";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -40,37 +41,58 @@ export default function LoginPage() {
       setButtonDisabled(true);
     }
   },[user])
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2">
-      <h1>{loading ? "Processing" : "Login"}</h1>
-      <hr />
-      <label htmlFor="email">email</label>
-      <input
-        id="email"
-        type="text"
-        value={user.email}
-        onChange={(e) => setUser({ ...user, email: e.target.value })}
-        placeholder="email"
-        className="p-1 border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 bg-amber-100 text-black"
-      />
-      <label htmlFor="password">password</label>
-      <input
-        id="password"
-        type="password"
-        value={user.password}
-        onChange={(e) => setUser({ ...user, password: e.target.value })}
-        placeholder="password"
-        className="p-1 border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 bg-amber-100 text-black"
-      />
-      <button
-        onClick={onLogin}
-        className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600"
-      >
-        {buttonDisabled ? "Fill all fields" : "Login here"}
-      </button>
-      <Link href="/signup" className="text-blue-500 hover:underline">
-        Visit signup
-      </Link>
-    </div>
+    return (
+    <AuthShell
+      title={loading ? "Logging in..." : "Log in"}
+      subtitle="Welcome back. Enter your details to continue."
+      footer={
+        <>
+          New here?{" "}
+          <Link href="/signup" className="link">
+            Create an account
+          </Link>
+        </>
+      }
+    >
+      <div className="space-y-5">
+        <div>
+          <label htmlFor="email" className="field-label">Email</label>
+          <input
+            id="email"
+            type="email"
+            autoComplete="email"
+            value={user.email}
+            onChange={(e) => setUser({ ...user, email: e.target.value })}
+            placeholder="you@example.com"
+            className="field-input"
+          />
+        </div>
+        <div>
+          <div className="flex items-baseline justify-between">
+            <label htmlFor="password" className="field-label">Password</label>
+            <Link href="/forgotpassword" className="link text-sm">
+              Forgot password?
+            </Link>
+          </div>
+          <input
+            id="password"
+            type="password"
+            autoComplete="current-password"
+            value={user.password}
+            onChange={(e) => setUser({ ...user, password: e.target.value })}
+            placeholder="Your password"
+            className="field-input"
+          />
+        </div>
+        <button
+          onClick={onLogin}
+          disabled={buttonDisabled || loading}
+          className="btn btn-primary w-full"
+        >
+          {buttonDisabled ? "Fill all fields" : "Log in"}
+        </button>
+      </div>
+    </AuthShell>
   );
 }
+
